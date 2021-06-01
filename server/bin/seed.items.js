@@ -1,3 +1,5 @@
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
 require("../config/dbConnection");
 const Item = require("../models/Item");
 const User = require("../models/User");
@@ -110,4 +112,4 @@ User.find()
     console.log(error);
   });
 
-seed();
+// seed();
