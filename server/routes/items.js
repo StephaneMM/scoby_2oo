@@ -21,24 +21,15 @@ router.get("/:id", (req, res, next) => {
 // POST	/api/items	Create an item in the DB	Requires auth.
 
 router.post("/", (req, res, next) => {
-  const { name, description, image, category, quantity, address, location, formattedAddress, creator, contact } = req.body;
-
-  const newItem = {
-    name,
-    description,
-    image,
-    category,
-    quantity,
-    address,
-    location,
-    formattedAddress,
-    creator,
-    contact,
+  req.body.location = {
+    coordinates: [req.body.lng, req.body.lat],
   };
 
-  ItemModel.create(newItem)
+  req.body.creator = req.session.currentUser;
+
+  ItemModel.create(req.body)
     .then((itemDocument) => {
-      res.status(201).json(itemDocument);
+      res.status(200).json(itemDocument);
     })
     .catch(next);
 });
@@ -50,7 +41,7 @@ router.patch("/:id", (req, res, next) => {
     .catch(next);
 });
 
-// DELETE	/api/items/:id	Deletes an item
+// DELETE	/api/items/:id	Deletes an item {404 sur postman}
 
 router.delete("/:id", (req, res, next) => {
   ItemModel.findByIdAndDelete(req.params.id)

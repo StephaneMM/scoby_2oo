@@ -2,19 +2,46 @@ import React, { Component } from "react";
 import LocationAutoComplete from "../LocationAutoComplete";
 import Button from "../Base/Button";
 import "../../styles/form.css";
+import ApiHandler from "./../../api/apiHandler";
 
 class ItemForm extends Component {
-  state = {};
+  state = {
+    name: "",
+    description: "",
+    category: "",
+    quantity: 0,
+    address: "",
+    location: { coordinate: "" },
+    formattedAddress: "",
+    creator: "",
+    contact: "",
+    isSubmitted: false,
+  };
 
-  handleChange(event) {
+  handleChange = (event) => {
     console.log("Wax On Wax Off");
-    this.setState({});
-  }
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
     console.log("Wax On Wax Off");
 
+    const newItem = {
+      name: this.state.name,
+      description: this.state.description,
+      category: this.state.category,
+      quantity: this.state.quantity,
+      address: this.state.address,
+      location: { coordinate: this.state.coordinate },
+      formattedAddress: this.state.formattedAddress,
+      creator: this.state.creator,
+      contact: this.state.contact,
+    };
+
+    ApiHandler.getItems(newItem)
+      .then((res) => this.setState({ isSubmitted: true }))
+      .catch((err) => console.log(err));
     // In order to send back the data to the client, since there is an input type file you have to send the
     // data as formdata.
     // The object that you'll be sending will maybe be a nested object, in order to handle nested objects in our form data
@@ -33,7 +60,7 @@ class ItemForm extends Component {
   render() {
     return (
       <div className="ItemForm-container">
-        <form className="form">
+        <form className="form" onSubmit={this.handleSubmit} >
           <h2 className="title">Add Item</h2>
 
           <div className="form-group">
