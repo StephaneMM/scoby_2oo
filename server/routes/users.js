@@ -6,7 +6,7 @@ const Items = require('../models/Item.js')
 // REQUIRED MIDDLEWARE
 router.get("/me", (req, res, next) => {
   Users.findById(req.session.currentUser)
-    .select("-paswword")
+    .select("-password")
     .then((userfound) => {
       res.status(200).json(userfound);
     })
@@ -25,7 +25,7 @@ router.get("/me/items", (req, res, next) => {
 // PATCH	/REQUIRED MIDDLEWARE
 router.patch("/me", (req, res, next) => {
   if (req.body.password) {
-    return res.status(400).json({ message: "Password field will send" });
+    return res.status(400).json({ message: "Password field was send" });
   }
   Users.findByIdAndUpdate(req.session.currentUser, req.body, { new: true })
     .then((result) => res.status(200).json(result))

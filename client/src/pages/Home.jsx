@@ -1,5 +1,5 @@
 import React from "react";
-import ReactMapboxGl from "react-mapbox-gl";
+import ReactMapboxGl, { Marker, Layer } from "react-mapbox-gl";
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -17,7 +17,15 @@ const Home = (props) => {
           height: "100vh",
           width: "100vw",
         }}
-      ></Map>
+      >
+        <Layer type="symbol" id="marker" layout={{ 'icon-image': 'marker-15' }}></Layer>
+        <Marker coordinates={[2.333333, 48.866667]} anchor="bottom">
+          <img
+            className="icon2"
+            src="https://image.flaticon.com/icons/png/512/740/740922.png"
+          />
+        </Marker>
+      </Map>
     </div>
   );
 };
